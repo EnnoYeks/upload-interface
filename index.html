@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Upload Interface</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- CAPTURE SCREEN -->
+  <div id="capture-screen" class="screen active">
+    <div class="status-bar">
+      <span class="time">2:05</span>
+      <span class="status-icons">4G • 38%</span>
+    </div>
+
+    <div class="camera-preview" id="camera-preview">
+      <!-- Background set via CSS / JS -->
+    </div>
+
+    <!-- Top controls -->
+    <div class="top-controls">
+      <button class="icon-btn close-btn" aria-label="Close">✕</button>
+      <button class="pill-btn" id="add-sound-btn" aria-label="Add sound">♪ Add sound</button>
+      <button class="icon-btn" id="high-contrast-toggle" aria-label="Toggle high contrast mode">◐</button>
+    </div>
+
+    <!-- Right tool rail -->
+    <div class="tool-rail" role="toolbar" aria-label="Camera tools">
+      <button class="tool-btn" data-tool="flip" aria-label="Flip camera">
+        <span class="tool-icon">🔄</span>
+        <span class="tool-label">Flip</span>
+      </button>
+      <button class="tool-btn" data-tool="timer" aria-label="Timer">
+        <span class="tool-icon">⏱</span>
+        <span class="tool-label">Timer</span>
+      </button>
+      <button class="tool-btn" data-tool="duration" aria-label="Duration, currently 15 seconds">
+        <span class="tool-icon">15s</span>
+        <span class="tool-label">Duration</span>
+      </button>
+      <button class="tool-btn" data-tool="effects" aria-label="Effects">
+        <span class="tool-icon">✨</span>
+        <span class="tool-label">Effects</span>
+      </button>
+      <button class="tool-btn" data-tool="speed" aria-label="Speed, currently 1x">
+        <span class="tool-icon">1×</span>
+        <span class="tool-label">Speed</span>
+      </button>
+      <button class="tool-btn" data-tool="greenscreen" aria-label="Green Screen">
+        <span class="tool-icon">🟩</span>
+        <span class="tool-label">Green Screen</span>
+      </button>
+      <button class="tool-btn" data-tool="retouch" aria-label="Retouch">
+        <span class="tool-icon">🪄</span>
+        <span class="tool-label">Retouch</span>
+      </button>
+      <button class="tool-btn" data-tool="filters" aria-label="Filters">
+        <span class="tool-icon">🌫</span>
+        <span class="tool-label">Filters</span>
+      </button>
+      <button class="tool-btn" data-tool="lighting" aria-label="Lighting">
+        <span class="tool-icon">💡</span>
+        <span class="tool-label">Lighting</span>
+      </button>
+      <button class="tool-btn" data-tool="flash" aria-label="Flash">
+        <span class="tool-icon">⚡</span>
+        <span class="tool-label">Flash</span>
+      </button>
+    </div>
+
+    <!-- Bottom controls -->
+    <div class="bottom-controls">
+      <div class="mode-tabs" role="tablist">
+        <button class="mode-tab" data-mode="video" role="tab">Video</button>
+        <button class="mode-tab active" data-mode="short" role="tab" aria-selected="true">Short</button>
+        <button class="mode-tab" data-mode="live" role="tab">Live</button>
+        <button class="mode-tab" data-mode="post" role="tab">Post</button>
+      </div>
+      <button class="record-btn" id="record-btn" aria-label="Start recording">
+        <span class="record-inner"></span>
+      </button>
+      <button class="icon-btn gallery-btn" id="gallery-btn" aria-label="Add from gallery">🖼</button>
+      <input type="file" id="file-input" accept="image/*" hidden>
+    </div>
+  </div>
+
+  <!-- DETAILS / PUBLISH SCREEN -->
+  <div id="details-screen" class="screen">
+    <div class="status-bar">
+      <span class="time">2:05</span>
+      <span class="status-icons">4G • 38%</span>
+    </div>
+
+    <header class="details-header">
+      <button class="icon-btn back-btn" id="back-btn" aria-label="Go back">←</button>
+      <h1>Create Pin</h1>
+      <div style="width:40px"></div>
+    </header>
+
+    <div class="details-content">
+      <!-- Thumbnail + Optimization status -->
+      <div class="media-preview" id="media-preview">
+        <img id="preview-img" alt="Selected media preview" hidden>
+        <button class="edit-cover-btn" aria-label="Edit cover">Edit cover</button>
+      </div>
+
+      <!-- Optimization Panel (NEW) -->
+      <section class="opt-card" id="opt-card" aria-labelledby="opt-heading">
+        <h2 id="opt-heading">Image Optimization</h2>
+        <div class="opt-stats">
+          <div class="stat">
+            <span class="stat-label">Original</span>
+            <span class="stat-value" id="orig-size">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Optimized</span>
+            <span class="stat-value" id="opt-size">—</span>
+          </div>
+          <div class="stat highlight">
+            <span class="stat-label">Saved</span>
+            <span class="stat-value" id="saved-pct">—</span>
+          </div>
+        </div>
+        <div class="quality-control">
+          <label for="quality-slider">Quality: <span id="quality-value">80</span>%</label>
+          <input type="range" id="quality-slider" min="50" max="95" value="80" step="5">
+        </div>
+        <div class="format-row">
+          <span>Format:</span>
+          <label><input type="radio" name="format" value="image/webp" checked> WebP</label>
+          <label><input type="radio" name="format" value="image/jpeg"> JPEG</label>
+        </div>
+        <button class="reoptimize-btn" id="reoptimize-btn">Re-optimize</button>
+      </section>
+
+      <!-- Title -->
+      <div class="field-group">
+        <label for="title-input">Title</label>
+        <div class="input-wrapper">
+          <input type="text" id="title-input" maxlength="100" placeholder="Tell everyone what your Pin is about" aria-describedby="title-count">
+          <button class="voice-btn" aria-label="Voice input for title">🎤</button>
+        </div>
+        <div class="char-count" id="title-count">0/100</div>
+      </div>
+
+      <!-- Description -->
+      <div class="field-group">
+        <label for="desc-input">Description</label>
+        <div class="input-wrapper">
+          <textarea id="desc-input" maxlength="800" placeholder="Describe your Pin" rows="4" aria-describedby="desc-count"></textarea>
+          <button class="voice-btn" aria-label="Voice input for description">🎤</button>
+        </div>
+        <div class="char-count" id="desc-count">0/800</div>
+      </div>
+
+      <!-- Link -->
+      <div class="field-group">
+        <label for="link-input">Link</label>
+        <input type="url" id="link-input" placeholder="Add your link here">
+      </div>
+
+      <!-- Pickers -->
+      <button class="picker-row" aria-label="Pick a board">
+        <span>Pick a board</span>
+        <span class="chevron">›</span>
+      </button>
+      <button class="picker-row" aria-label="Tag topics">
+        <span>Tag topics</span>
+        <span class="chevron">›</span>
+      </button>
+      <button class="picker-row" aria-label="Tag products">
+        <span>Tag products</span>
+        <span class="chevron">›</span>
+      </button>
+
+      <!-- Accessibility Card -->
+      <section class="a11y-card" aria-labelledby="a11y-heading">
+        <h2 id="a11y-heading">Accessibility</h2>
+        
+        <div class="field-group">
+          <label for="alt-text">Alt text / Image description</label>
+          <textarea id="alt-text" rows="2" placeholder="Describe the visual content for screen reader users"></textarea>
+        </div>
+
+        <div class="toggle-row">
+          <label for="auto-captions">Auto-generate captions / transcript</label>
+          <input type="checkbox" id="auto-captions" checked>
+        </div>
+
+        <div class="toggle-row">
+          <label for="audio-desc">Include audio description</label>
+          <input type="checkbox" id="audio-desc">
+        </div>
+
+        <div class="field-group">
+          <label for="content-warnings">Content warnings</label>
+          <input type="text" id="content-warnings" placeholder="e.g. flashing lights, sudden sounds">
+        </div>
+      </section>
+    </div>
+
+    <div class="details-footer">
+      <button class="create-btn" id="create-btn">Create</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
